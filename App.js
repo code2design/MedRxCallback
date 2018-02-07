@@ -89,18 +89,9 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
     justifyContent: 'center',
-    textAlign: 'center'
+    textAlign: 'center',
+    color: '#4000ff'
 
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
   },
   card:{
     margin: 10,
@@ -109,6 +100,7 @@ const styles = StyleSheet.create({
   },
   title:{
     fontSize: 16,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: '#ff0080' 
   }
 });

@@ -6,11 +6,9 @@ The application is build using react-native. The purpose of this application is 
 ## Technologies
 The app is developed in react-native for android & iOS. The application consumes FDA Open API.
 
-## Install & run
+## Install & Run
 1. Pull the repository 
 2. npm install 
 3. run application
 	1. ios `react-native run-ios`
 	2. Android `react-native run-android`
-
-
