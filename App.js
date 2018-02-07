@@ -9,7 +9,8 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View
+  View,
+  ScrollView
 } from 'react-native';
 
 const instructions = Platform.select({
@@ -21,19 +22,57 @@ const instructions = Platform.select({
 
 type Props = {};
 export default class App extends Component<Props> {
+  
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: true,
+      data: []
+    }
+  }
+
+  componentDidMount(){
+    return fetch("https://api.fda.gov/drug/enforcement.json?search=status:Ongoing&limit=50")
+           .then((response)=>response.json())
+           .then((responseJson)=>{
+              // alert(responseJson.results[0].reason_for_recall)
+              var items = []
+              responseJson.results.forEach(function(item){
+                items.push(item);
+              })
+
+              this.setState({
+                isLoading: false,
+                data: items
+              })
+            })
+           .catch((error)=>{
+            console.error(error);
+           })        
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
-      </View>
+      <ScrollView>
+        <View style={styles.container}>
+          <Text style={styles.heading}>MedRx Callback</Text>
+            {this.state.data.map((item, i)=>
+              <Text key={i} style={styles.card}>
+                <Text style={styles.title}>Code Info: </Text>{"\n"}
+                <Text>{item.code_info}</Text>{"\n"}
+                <Text style={styles.title}>Recalling firm: </Text>{"\n"}
+                <Text>{item.recalling_firm}</Text>{"\n"}
+                <Text style={styles.title}>Report Date</Text>{"\n"}
+                <Text>{item.report_date}</Text>{"\n"}
+                <Text style={styles.title}>Reason for Recall:</Text>{"\n"}
+                <Text>{item.reason_for_recall}</Text>{"\n"}
+                <Text style={styles.title}>Location:</Text>{"\n"}
+                <Text>{item.address_1}, {item.city}, {item.state} </Text>
+              </Text>
+            )}
+          
+        </View>
+      </ScrollView>
     );
   }
 }
@@ -42,8 +81,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    // alignItems: 'center',
+    backgroundColor: '#97d8b2',
+    padding: 10
+  },
+  heading:{
+    fontSize: 25,
+    fontWeight: 'bold',
+    justifyContent: 'center',
+    textAlign: 'center'
+
   },
   welcome: {
     fontSize: 20,
@@ -55,4 +102,13 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+  card:{
+    margin: 10,
+    backgroundColor: '#ecdcb0',
+    padding: 10
+  },
+  title:{
+    fontSize: 16,
+    fontWeight: 'bold'
+  }
 });
